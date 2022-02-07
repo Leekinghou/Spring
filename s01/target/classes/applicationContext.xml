@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--  在IOC容器启动时，自动由Spring实例化Apple对象，取名sweetApple放入到容器中  -->
+    <bean id="sweetApple" class="spring.ioc.Apple">
+        <property name="title" value="红富士"></property>
+        <property name="origin" value="European"></property>
+        <property name="color" value="red"></property>
+    </bean>
+
+    <bean id="softApple" class="spring.ioc.Apple">
+        <property name="title" value="金帅"></property>
+        <property name="origin" value="China"></property>
+        <property name="color" value="yellow"></property>
+    </bean>
+
+    <bean id="sourApple" class="spring.ioc.Apple">
+        <property name="title" value="青苹果"></property>
+        <property name="origin" value="American"></property>
+        <property name="color" value="green"></property>
+    </bean>
+</beans>
