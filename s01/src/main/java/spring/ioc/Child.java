@@ -33,6 +33,6 @@ public class Child {
     }
 
     public void eat(){
-        System.out.println(name + "吃到了" + apple.getOrigin() + "颜色是" + apple.getColor() + "的苹果" + apple.getTitle());
+        System.out.println(name + "吃到了" + apple.getOrigin() + "种植的" + apple.getColor() + apple.getTitle());
     }
 }

@@ -1,8 +1,10 @@
 package spring;
 
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import spring.ioc.Apple;
+import spring.ioc.Child;
 
 /**
  * @author: lijinhao
@@ -12,7 +14,13 @@ public class SpringApplication {
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 
-        Apple sweetApple = context.getBean("sweetApple", Apple.class);
-        sweetApple.getTitle();
+        Child lily = context.getBean("lily", Child.class);
+        lily.eat();
+
+        Child andy = context.getBean("andy", Child.class);
+        andy.eat();
+
+        Child xiaomi = context.getBean("xiaomi", Child.class);
+        xiaomi.eat();
     }
 }

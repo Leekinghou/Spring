@@ -1,6 +1,16 @@
 # Spring
 Spring notebook
-
+  
+- ioc
+  将对象交由ioc容器统一管理，对象和对象之间实现解耦
+  通过修改配置文件修改对象关系
+- DI 依赖注入
+  由java反转实现
+  
+# 目录
+- [reflection](#前置知识·反射) 前置知识·反射
+- [S01](#使用Spring) 使用Spring
+- [S02](#配置Bean) 配置Bean
 # 前置知识·反射
 ## 学习要点
 - 反射及其作用
@@ -32,3 +42,68 @@ int result = mathOperation.operate(a, b);
 | ClassObj.getConstructor()  | 获得指定的public修饰构造方法Constructor对象 |
 | ClassObj.getMethod()  | 获得指定的public修饰Method对象 |
 | ClassObj.getField()  | 获得指定的public修饰成员变量Field对象 |
+
+# 使用Spring
+
+## pom.xml文件
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>s01</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.2.19.RELEASE</version>
+        </dependency>
+    </dependencies>
+</project>
+```
+
+## applicationContext.xml文件
+- 添加bean
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--  在IOC容器启动时，自动由Spring实例化Apple对象，取名sweetApple放入到容器中  -->
+    <bean id="sweetApple" class="spring.ioc.Apple">
+        <property name="title" value="红富士"></property>
+        <property name="origin" value="European"></property>
+        <property name="color" value="red"></property>
+    </bean>
+</beans>
+```
+## 使用
+```java
+public class SpringApplication {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+
+        Child lily = context.getBean("lily", Child.class);
+        lily.eat();
+
+        Child andy = context.getBean("andy", Child.class);
+        andy.eat();
+
+        Child xiaomi = context.getBean("xiaomi", Child.class);
+        xiaomi.eat();
+    }
+}
+```
+
+# 配置Bean
