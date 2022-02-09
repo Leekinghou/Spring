@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--  bean标签默认通过默认构造方法来创建对象  -->
+    <bean id="apple1" class="com.spring.ioc.entity.Apple">
+
+    </bean>
+
+    <!--  bean标签通过带参构造方法来创建对象  -->
+    <bean id="apple2" class="com.spring.ioc.entity.Apple">
+        <constructor-arg name="title" value="红富士"/>
+        <constructor-arg name="color" value="red"/>
+        <constructor-arg name="origin" value="European"/>
+    </bean>
+
+
+</beans>
