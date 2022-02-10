@@ -12,13 +12,17 @@ Spring notebook
 - [i18n](#工厂模式) 工厂模式实例 i18n
 - [S01](#使用Spring) 使用Spring
 - [S02](#配置Bean) 配置Bean
+- [利用setter方法实现对象依赖注入](#利用setter方法实现对象依赖注入) 利用setter方法实现对象依赖注入
+- [book-shop](#ioc项目代码中解耦合) ioc在实际项目中的重要用途（ref应用）
+
 
 # 前置知识
 
 ## 工厂模式
 - 工厂模式用于隐藏创建对象的细节 
 - 核心是工厂类（Factory）
-
+  ![](https://gitee.com/leekinghou/image/raw/master/img/20220209123736.png)
+- 多语言切换、多种设备（桌面/手机/平板）展示
 ## 反射
 
 ### 学习要点
@@ -30,7 +34,7 @@ Spring notebook
 **反射（reflection.reflect）是代码`在运行时`动态访问类与对象的技术**
 - 来自于`java.lang.reflection.reflect`  
   初学java时，要实例化一个对象，需要：
-```java
+```
 //Object obj = new Object<>();
 
 MathOperation mathOperation = null;
@@ -180,6 +184,29 @@ Apple对象已创建com.spring.ioc.entity.Apple@35fb3008
 Apple对象通过带参构造方法已创建com.spring.ioc.entity.Apple@7cd62f43
 ```
 
+## 利用setter方法实现对象依赖注入  
+```
+public void setApple(Apple apple) {
+    this.apple = apple;
+}
+```
+applicationContext.xml文件
+```xml
+<bean id="sweetApple" class="spring.ioc.Apple">
+    <property name="title" value="红富士"></property>
+    <property name="origin" value="European"></property>
+    <property name="color" value="red"></property>
+</bean>
+```
 
+ref代表reference
+```xml
+<bean id="lily" class="spring.ioc.Child">
+    <property name="name" value="莉莉" />
+    <property name="apple" ref="sweetApple"/>
+</bean>
+```
 
+# ioc项目代码中解耦合
+ref应用案例： 书店后端的业务层和数据层解耦合
 
