@@ -14,7 +14,8 @@ Spring notebook
 - [S02](#配置Bean) 配置Bean
 - [利用setter方法实现对象依赖注入](#利用setter方法实现对象依赖注入) 利用setter方法实现对象依赖注入
 - [book-shop](#ioc项目代码中解耦合) ioc在实际项目中的重要用途（ref应用）
-
+- [s04](#注入集合对象) 注入集合对象list、set、properties
+- [高效函数](#高效函数) ApplicationContext对象的函数
 
 # 前置知识
 
@@ -207,6 +208,134 @@ ref代表reference
 </bean>
 ```
 
+
+## 构造方法实现对象依赖注入
+```xml
+<bean id="apple2" class="com.spring.ioc.entity.Apple">
+  <constructor-arg name="name" value="andy"/>
+  <constructor-arg name="apple" ref="sourApple"/>
+
+</bean>
+```
 # ioc项目代码中解耦合
 ref应用案例： 书店后端的业务层和数据层解耦合
 
+# 注入集合对象
+基于java的list和set的特性，数据允许重复时使用list，不允许重复时使用set
+1. 实现功能类，实现注入需要用到setter方法
+
+```java
+public class Company {
+  private List<String> rooms;
+
+  public Company() {
+  }
+
+  public Company(List<String> rooms, Map<String, Computer> computers, Properties info) {
+    this.rooms = rooms;
+    this.computers = computers;
+    this.info = info;
+  }
+
+  public List<String> getRooms() {
+    return rooms;
+  }
+
+  public void setRooms(List<String> rooms) {
+    this.rooms = rooms;
+  }
+}
+```
+
+2. 修改applicationContext.xml配置文件
+```xml
+<bean id="company" class="com.spring.ioc.entity.Company">
+    <property name="rooms">
+        <list>
+            <value>2001-总裁办</value>
+            <value>2002-总经理办公室</value>
+            <value>2003-研发部会议室</value>
+        </list>
+    </property>
+</bean>
+```
+3. 修改程序入口，实现注入
+```java
+public class SpringApplication {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+        Company company = context.getBean("company", Company.class);
+        System.out.println(company);
+    }
+}
+```
+
+4. 输出
+```shell
+Company{rooms=[2001-总裁办, 2002-总经理办公室, 2003-研发部会议室], computers=null, info=null}
+```
+
+5. 其他
+- set方法
+```xml
+<bean id="company" class="com.spring.ioc.entity.Company">
+    <property name="rooms">
+        <set>
+            <value>2001-总裁办</value>
+            <value>2002-总经理办公室</value>
+            <value>2003-研发部会议室</value>
+        </set>
+    </property>
+</bean>
+```
+
+```java
+public class Company {
+  private Set<String> rooms;
+
+  public Company() {
+  }
+
+  public Company(List<String> rooms, Map<String, Computer> computers, Properties info) {
+    this.rooms = rooms;
+    this.computers = computers;
+    this.info = info;
+  }
+
+  public Set<String> getRooms() {
+    return rooms;
+  }
+
+  public void setRooms(Set<String> rooms) {
+    this.rooms = rooms;
+  }
+}
+```
+- map
+
+```xml
+<property name="computers">
+    <map>
+        <!-- 但是这样要分开写c1这个bean，不方便管理，可以使用内置bean，有ref的地方都可以使用内置bean -->
+        <entry key="dev-88121" value-ref="c1"/>
+        
+        <entry key="dev-88122">
+            <bean class="com.spring.ioc.entity.Computer">
+                <constructor-arg name="brand" value="华为"/>
+                <constructor-arg name="type" value="台式机"/>
+                <constructor-arg name="sn" value="SD10083992"/>
+                <constructor-arg name="price" value="7000"/>
+            </bean>
+        </entry>
+    </map>
+</property>
+```
+
+# 高效函数
+1. getBeanDefinitionNames()获取bean的id名字，内部bean无法获取
+```java
+String[] beanName = context.getBeanDefinitionNames();
+for(String name: beanName){
+    System.out.println(name);
+}
+```

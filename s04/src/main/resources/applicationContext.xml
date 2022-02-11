@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+    <bean id="c1" class="com.spring.ioc.entity.Computer">
+        <constructor-arg name="brand" value="华为"/>
+        <constructor-arg name="type" value="台式机"/>
+        <constructor-arg name="sn" value="SD10083942"/>
+        <constructor-arg name="price" value="9000"/>
+    </bean>
+    <bean id="company" class="com.spring.ioc.entity.Company">
+        <property name="rooms">
+            <list>
+                <value>2001-总裁办</value>
+                <value>2002-总经理办公室</value>
+                <value>2003-研发部会议室</value>
+            </list>
+        </property>
+
+        <property name="computers">
+            <map>
+                <entry key="dev-88121" value-ref="c1"/>
+                <!-- 但是这样要分开写c1这个bean，不方便管理，可以使用内置bean，有ref的地方都可以使用内置bean -->
+                <entry key="dev-88122">
+                    <bean class="com.spring.ioc.entity.Computer">
+                        <constructor-arg name="brand" value="华为"/>
+                        <constructor-arg name="type" value="台式机"/>
+                        <constructor-arg name="sn" value="SD10083992"/>
+                        <constructor-arg name="price" value="7000"/>
+                    </bean>
+                </entry>
+
+            </map>
+        </property>
+
+        <property name="info">
+            <props>
+                <prop key="phone">020-12345678</prop>
+                <prop key="address">长江路路步行街</prop>
+                <prop key="website">https://www.xxx.com</prop>
+            </props>
+        </property>
+    </bean>
+</beans>
