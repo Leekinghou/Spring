@@ -16,7 +16,7 @@ Spring notebook
 - [book-shop](#ioc项目代码中解耦合) ioc在实际项目中的重要用途（ref应用）
 - [s04](#注入集合对象) 注入集合对象list、set、properties
 - [高效函数](#高效函数) ApplicationContext对象的函数
-- [bean scope](#bean scope属性) bean scope属性
+- [bean scope](#beanScope属性) bean scope属性
 
 # 前置知识
 
@@ -341,7 +341,7 @@ for(String name: beanName){
 }
 ```
 
-# bean scope属性
+# beanScope属性
 ## 详解
 1. bean scope属性用来决定对象何时被创建和作用范围
 2. bean scope配置将影响容器内对象的数量
