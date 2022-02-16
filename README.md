@@ -17,6 +17,7 @@ Spring notebook
 - [s04](#注入集合对象) 注入集合对象list、set、properties
 - [高效函数](#高效函数) ApplicationContext对象的函数
 - [bean scope](#beanScope属性) bean scope属性
+- [s05](#生命周期) bean单例模式和多例模式，生命周期
 
 # 前置知识
 
@@ -360,14 +361,14 @@ prototype代表允许存在多个实例，每次使用对象，IOC容器会自�
 ```
 
 ### 应知
-【笔试题】 
-- 在IoC容器初始化的过程中实例化了多少个对象？  
+【笔试题】   
+- 在IoC容器初始化的过程中实例化了多少个对象？    
 原理：  
 1. IOC容器初始化时，就会将`单例模式 singleton`对象创建  
 2. 在获取bean(getBean函数调用)时创建`多例模式 prototype`对象  
 3. 如果单例模式对象`ref`引用了多例模式对象，会先创建多例模式对象，再创建单例模式对象  
 
-- 如何判断一个函数应该设置为单例还是多例？
+- 如何判断一个函数应该设置为单例还是多例？  
 如果该函数对象属性恒定不变，那么就用单例，如果经常变化，就是多例
   
 
@@ -386,5 +387,57 @@ prototype代表允许存在多个实例，每次使用对象，IOC容器会自�
 | application | web环境下，ServletContext存在唯一实例 |
 | websocket | 每一次WebSocket连接存在唯一实例(网络在线客服) |
 
+# bean生命周期
+![](https://gitee.com/leekinghou/image/raw/master/img/Untitled.drawio.png)
+- 步骤：
+1. 创建对象
+2. 设置属性
+3. 调用init方法
+4. 通过调用对应的业务方法提供服务
+5. 释放资源
+
+```java
+public class Order {
+    private Float price;
+    private Integer quantity;
+    private Float total;
+    // 1. 创建对象
+    public Order() {
+        System.out.println("创建Order对象," + this);
+    }
+    
+    // 
+    public void init(){
+        total = price * quantity;
+    }
+
+    public void destroy(){
+        System.out.println("释放与订单对象相关的资源");
+    }
+}
+```
+3. 调用init方法
+```xml
+<bean id="order1" class="com.spring.ioc.entity.Order" init-method="init" destroy-method="destroy">
+    <!--  2. 设置属性-->
+    <property name="price" value="19.8"/>
+    <property name="quantity" value="1000"/>
+</bean>
+```
+
+5. 释放资源
+```java
+((ClassPathXmlApplicationContext) context).registerShutdownHook();
+```
+
+output:
+```xml
+创建Order对象,com.spring.ioc.entity.Order@754ba872
+设置price：19.8
+设置quantity：19.8
+======IoC容器已经完成初始化======
+订单金额为：19800.0
+释放与订单对象相关的资源
+```
 
 

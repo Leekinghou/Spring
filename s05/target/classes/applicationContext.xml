@@ -8,4 +8,9 @@
         <property name="userDao" ref="userDao"/>
     </bean>
 
+    <bean id="order1" class="com.spring.ioc.entity.Order" init-method="init" destroy-method="destroy">
+        <property name="price" value="19.8"/>
+        <property name="quantity" value="1000"/>
+    </bean>
+
 </beans>
