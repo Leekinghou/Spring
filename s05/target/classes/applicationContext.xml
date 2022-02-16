@@ -3,15 +3,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <bean id="bookDao" class="com.spring.ioc.bookshop.dao.BookDaoImpl">
-
+    <bean id="userDao" class="com.spring.ioc.dao.UserDao" scope="prototype"/>
+    <bean id="userService" class="com.spring.ioc.service.UserService">
+        <property name="userDao" ref="userDao"/>
     </bean>
-
-    <bean id="bookDaoOracle" class="com.spring.ioc.bookshop.dao.BookDaoOracleImpl">
-
-    </bean>
-    <!-- more bean definitions go here -->
-
 
 </beans>

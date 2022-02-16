@@ -16,6 +16,7 @@ Spring notebook
 - [book-shop](#ioc项目代码中解耦合) ioc在实际项目中的重要用途（ref应用）
 - [s04](#注入集合对象) 注入集合对象list、set、properties
 - [高效函数](#高效函数) ApplicationContext对象的函数
+- [bean scope](#bean scope属性) bean scope属性
 
 # 前置知识
 
@@ -339,3 +340,51 @@ for(String name: beanName){
     System.out.println(name);
 }
 ```
+
+# bean scope属性
+## 详解
+1. bean scope属性用来决定对象何时被创建和作用范围
+2. bean scope配置将影响容器内对象的数量
+3. 默认情况下bean会在IoC容器创建后自动实例化，全局唯一
+
+## 属性详解
+### 单例模式 singleton
+IOC容器初始化时，就会将对象创建    
+如果不写scope属性就代表每一个容器有且只有唯一实例，可以被全局共享，也就是在全局只要是同一个bean id都指向同一个  
+存在线程安全问题，setNumber、getNumber  
+### 多例模式 prototype
+在获取bean(getBean函数调用)时创建对象  
+prototype代表允许存在多个实例，每次使用对象，IOC容器会自动创建一个新的实例  
+```xml
+<bean id="bookDao" class="com.spring.ioc.bookshop.dao.BookDaoOracleImpl" scope="prototype"/>
+```
+
+### 应知
+【笔试题】 
+- 在IoC容器初始化的过程中实例化了多少个对象？  
+原理：  
+1. IOC容器初始化时，就会将`单例模式 singleton`对象创建  
+2. 在获取bean(getBean函数调用)时创建`多例模式 prototype`对象  
+3. 如果单例模式对象`ref`引用了多例模式对象，会先创建多例模式对象，再创建单例模式对象  
+
+- 如何判断一个函数应该设置为单例还是多例？
+如果该函数对象属性恒定不变，那么就用单例，如果经常变化，就是多例
+  
+
+```xml
+<bean id="userDao" class="com.spring.ioc.dao.UserDao" scope="prototype"/>
+<bean id="userService" class="com.spring.ioc.service.UserService">
+    <property name="userDao" ref="userDao"/>
+</bean>
+```
+
+### 其他
+|  属性   | 说明  |
+|  ----  | ----  |
+| request  | web环境下，每一次独立请求存在唯一实例 |
+| session  | web环境下，每一个session存在唯一实例 |
+| application | web环境下，ServletContext存在唯一实例 |
+| websocket | 每一次WebSocket连接存在唯一实例(网络在线客服) |
+
+
+
