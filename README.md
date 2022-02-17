@@ -18,6 +18,7 @@ Spring notebook
 - [高效函数](#高效函数) ApplicationContext对象的函数
 - [bean scope](#beanScope属性) bean scope属性
 - [s05](#生命周期) bean单例模式和多例模式，生命周期
+- [s06](#手动实现极简的IoC容器)手动实现极简的IoC容器
 
 # 前置知识
 
@@ -440,4 +441,6 @@ output:
 释放与订单对象相关的资源
 ```
 
+# 手动实现极简的IoC容器
+可以将每一个ClassPathXmlApplicationContext理解为一个Ioc容器，用来存储对象的就是其中的Map
 
