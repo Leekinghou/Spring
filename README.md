@@ -19,6 +19,7 @@ Spring notebook
 - [bean scope](#beanScope属性) bean scope属性
 - [s05](#生命周期) bean单例模式和多例模式，生命周期
 - [s06](#手动实现极简的IoC容器)手动实现极简的IoC容器
+- [s07](#基于注解配置IoC容器)基于注解配置IoC容器
 
 # 前置知识
 
@@ -446,3 +447,89 @@ output:
 
 详情请看s06代码模块
 
+# 基于注解配置IoC容器
+- 不需要像配置XML形式的文件那么繁琐（设置beanid、在代码和配置文件中切换）
+- IoC初始化过程中就会扫描所有的类
+## 注解
+
+在写代码的过程中完成配置
+
+组件类型注解-声明当前类的功能与职责
+
+自动装配注解-根据属性特征自动注入对象
+
+元数据注解-更细化的辅助IoC容器管理对象的注解
+
+| 注解 | 说明 |
+|---|---|
+|@Component|组件注解/通用注解，被@Component注解的类将被IoC容器管理并且实例化|
+|@Controller|说明当前类是MVC应用中的控制类|
+|@Service|说明当前类是Service业务服务类|
+|@Repository|说明当前类用于业务持久层，通常描述Dao类|
+
+## 开启组件扫描
+```xml
+<!-- 只有XML配置开启组件扫描，才能使用注解 -->
+<context:component-scan base-package="com.spring">
+    <!-- 使用正则表达式，排除/包含某些文件 -->
+    <context:exclude-filter type="regex" expression="com.spring.exl.*"/>
+</context:component-scan>
+```
+
+基于注解的IoC容器的扫描器跟基于XML的不一样，不需要用到`<bean></bean>`，只需要添加`<context:component-scan base-package="com.spring"/>`
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--    <context:annotation-config/>-->
+    <!--  在IoC容器初始化时自动扫描四种组件类型注解并完成实例化
+        @Repository
+        @Service
+        @Controller
+        @Component
+    -->
+    <context:component-scan base-package="com.spring"/>
+</beans>
+```
+组件类型注解(例如@Repository)默认beanId为类首字母小写
+beanid = userDao，也可以自己更改，如使用@Repository("uDao")
+```java
+@Repository("uDao")
+public class UserDao {
+    // 用户持久类，用于增删改查
+    // @Repository会让IoC容器自动创建UserDao的对象，并且管理起来
+  
+}
+```
+```java
+public class SpringApplication {
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+
+        String[] ids = context.getBeanDefinitionNames();
+        for(String id: ids){
+            System.out.println(id + ":" + context.getBean(id));
+        }
+    }
+}
+```
+output:
+```shell
+userController:com.spring.ioc.controlloer.UserController@73d4cc9e
+uDao:com.spring.ioc.dao.UserDao@80169cf
+userService:com.spring.ioc.service.UserService@5427c60c
+stringUtils:com.spring.ioc.utils.StringUtils@15bfd87
+org.springframework.context.annotation.internalConfigurationAnnotationProcessor:org.springframework.context.annotation.ConfigurationClassPostProcessor@543e710e
+org.springframework.context.annotation.internalAutowiredAnnotationProcessor:org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor@57f23557
+org.springframework.context.annotation.internalCommonAnnotationProcessor:org.springframework.context.annotation.CommonAnnotationBeanPostProcessor@3d0f8e03
+org.springframework.context.event.internalEventListenerProcessor:org.springframework.context.event.EventListenerMethodProcessor@6366ebe0
+org.springframework.context.event.internalEventListenerFactory:org.springframework.context.event.DefaultEventListenerFactory@44f75083
+```
+【问题】这几个实例时单例还是多例模式的？  
+答：必然是单例模式，因为只有单例模式的实例才会在IoC容器初始化的时候将对象创建  

@@ -24,10 +24,7 @@ echo "####### 添加文件 #######"
 
 git commit -m "$2"
 
-echo "####### commit #######"
-
 sleep 1s
-
 
 echo "####### 拉取远程最新代码 #######"
 
@@ -48,3 +45,5 @@ git merge master
 echo "####### 开始推送 #######"
 
 git push origin master "$1"
+
+

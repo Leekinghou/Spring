@@ -13,6 +13,7 @@
         <module name="s04" />
         <module name="s06" />
         <module name="s05" />
+        <module name="s07" />
         <module name="i18n" />
       </profile>
     </annotationProcessing>
