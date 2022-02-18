@@ -6,5 +6,4 @@
         <property name="color" value="红色"/>
         <property name="origin" value="欧洲"/>
     </bean>
-
 </beans>
