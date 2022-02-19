@@ -20,6 +20,7 @@ Spring notebook
 - [s05](#生命周期) bean单例模式和多例模式，生命周期
 - [s06](#手动实现极简的IoC容器)手动实现极简的IoC容器
 - [s07](#基于注解配置IoC容器)基于注解配置IoC容器
+- [s07_1](#自动装配注解)两类自动装配注解
 
 # 前置知识
 
@@ -533,3 +534,70 @@ org.springframework.context.event.internalEventListenerFactory:org.springframewo
 ```
 【问题】这几个实例时单例还是多例模式的？  
 答：必然是单例模式，因为只有单例模式的实例才会在IoC容器初始化的时候将对象创建  
+
+# 自动装配注解
+<table>
+   <tr>
+      <td>分类</td>
+      <td>注解</td>
+      <td>说明</td>
+   </tr>
+   <tr>
+      <td>按类型装配</td>
+      <td>@Autowired</td>
+      <td>按容器内对象类型动态注入属性</td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>@Inject</td>
+      <td>同@Autowired，但不支持required属性</td>
+   </tr>
+   <tr>
+      <td>按名称装配</td>
+      <td>@Named</td>
+      <td>与@Inject搭配使用，按属性名自动装配属性</td>
+   </tr>
+   <tr>
+      <td></td>
+      <td>@Resource</td>
+      <td>有限按名称，再按类型智能匹配</td>
+   </tr>
+</table>
+
+- 什么是按类型装配/按名称装配?
+```xml
+<bean id="bookDao" class="com.spring.ioc.bookshop.dao.BookDaoImpl">
+
+</bean>
+
+<bean id="bookService" class="com.spring.ioc.bookshop.service.BookService">
+    <property name="bookDao" ref="bookDao"/>
+</bean>
+```
+如上，在一个bean中使用另一个bean的名称来注入属性被称作按名称注入
+
+按类型注入则是不关心bean的名称，而是在为属性注入时，将属性类型相同的对象也完成注入
+
+## 装配注解
+```java
+public class UserService {
+    @Autowired
+    private UserDao udao;
+}
+```
+
+```java
+public class UserService {
+
+    private UserDao udao;
+
+    @Autowired
+    public void setUdao(UserDao udao) {
+        System.out.println("setUdao: " + udao);
+        this.udao = udao;
+    }
+}
+```
+装配注解写在set方法上和写在定义属性的位置都可以完成对象注入，但是过程机制是完全不一样的。  
+前者执行了set方法实现对象注入，后者不执行set方法，Spring IoC容器会自动通过反射技术将属性private修饰符改成public，直接进行赋值  
+

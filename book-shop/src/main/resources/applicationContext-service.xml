@@ -6,7 +6,6 @@
 
     <bean id="bookService" class="com.spring.ioc.bookshop.service.BookService">
         <property name="bookDao" ref="bookDao"/>
-
     </bean>
 
     <bean id="bookServiceOracle" class="com.spring.ioc.bookshop.service.BookService">
