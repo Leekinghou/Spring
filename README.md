@@ -578,7 +578,7 @@ org.springframework.context.event.internalEventListenerFactory:org.springframewo
 
 按类型注入则是不关心bean的名称，而是在为属性注入时，将属性类型相同的对象也完成注入
 
-## 装配注解
+## 类型装配注解
 ```java
 public class UserService {
     @Autowired
@@ -600,4 +600,27 @@ public class UserService {
 ```
 装配注解写在set方法上和写在定义属性的位置都可以完成对象注入，但是过程机制是完全不一样的。  
 前者执行了set方法实现对象注入，后者不执行set方法，Spring IoC容器会自动通过反射技术将属性private修饰符改成public，直接进行赋值  
+
+## 问题
+- 当存在两个类型相同的类时，注入失败代码会报错  
+![](https://gitee.com/leekinghou/image/raw/master/img/20220219231526.png)
+- 出现原因  
+因为IUserDao类型的对象由两个：userDao和userOracleDao，IoC容器在初始化的过程中要将属性注入，但是不知道注入哪一个的对象的属性，因此报错。
+  
+- 解决办法
+  - 方法一：去除@Reposity，UserDao就不会被IoC容器管理
+  - 方法二：其中一个加上@Primary注解（Primary主要的）
+  ```java
+    @Repository
+    @Primary
+    public class UserOracleDao implements IUserDao{
+      public UserOracleDao() {
+        System.out.println("正在创建UserOracleDao:" + this);
+      }
+    }
+  ```
+
+更好的办法，是按名称装配
+  
+
 
