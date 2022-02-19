@@ -1,5 +1,6 @@
 package com.spring.ioc.service;
 
+import com.spring.ioc.dao.IUserDao;
 import com.spring.ioc.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-
-    private UserDao udao;
+    @Autowired
+    private IUserDao udao;
 
     public UserService() {
         System.out.println("正在创建UserService: " + this);
@@ -22,11 +23,11 @@ public class UserService {
         this.udao = udao;
     }
 
-    public UserDao getUdao() {
+    public IUserDao getUdao() {
         return udao;
     }
 
-    @Autowired
+
     public void setUdao(UserDao udao) {
         System.out.println("setUdao: " + udao);
         this.udao = udao;

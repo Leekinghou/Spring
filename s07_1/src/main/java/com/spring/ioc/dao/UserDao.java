@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 // beanid = userDao，也可以自己更改，如使用@Repository("uDao")
 
 @Repository("uDao")
-public class UserDao {
+public class UserDao implements IUserDao{
     // 用户持久类，用于增删改查
     // @Repository会让IoC容器自动创建UserDao的对象，并且管理起来
 
