@@ -40,8 +40,6 @@ echo "####### 本地合并代码 #######"
 
 git merge master
 
-:q
-
 echo "####### 开始推送 #######"
 
 git push origin master "$1"
