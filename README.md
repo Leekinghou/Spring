@@ -22,7 +22,7 @@ Spring notebook
 - [s07](#基于注解配置IoC容器)基于注解配置IoC容器
 - [s07_1](#Autowired自动装配注解)@Autowired自动装配注解
 - [s07-2](#Resource装配注解)@Resource按名称自动装配注解
-
+- [s07-3](#元数据注解)@Primary、@PostConstruct、@PreDestroy、@Scope、@Value
 # 前置知识
 
 ## 工厂模式
@@ -651,4 +651,60 @@ public class DepartmentService {
 }
 ```
 
+## 元数据注解
+代码见s07-3
+| 注解 | 说明 |
+|---|---|
+|@Primary|按类型装配时，出现多个相同类型对象，有@Primary的优先被注入|
+|@PostConstruct|相当于XML里面的init-method|
+|@PreDestroy|相当于XML里面的destroy-method|
+|@Scope|设置对象的scope属性|
+|@Value|为属性注入静态数据(配置文件常用)|
 
+config.properties:
+```properties
+metaData=spring.com
+author=XXX
+# 通过增加前缀，告知该参数的作用和范围
+connection.driver=xxxx
+connection.url=xxxxx
+connection.username=xxxx
+connection.password=xxxxxxxxxx
+```
+
+UserService.java:
+```java
+@Service
+@Scope("prototype") // 设置单例/多例模式，与XML中的bean scope完全相同
+public class UserService {
+    @Value("${metaData}") //读取config.properties的metaData属性值
+    private String metaData;
+
+    @Autowired
+    private IUserDao udao;
+
+    @Value("connection.username")
+    private String username;
+
+    @PostConstruct // XML中bean init-method完全相同
+    public void init(){
+        System.out.println("初始化UserService对象，metaData：" + metaData);
+    }
+    public UserService() {
+        System.out.println("正在创建UserService: " + this);
+    }
+
+    public UserService(UserDao udao) {
+        this.udao = udao;
+    }
+
+    public IUserDao getUdao() {
+        return udao;
+    }
+    
+    public void setUdao(UserDao udao) {
+        System.out.println("setUdao: " + udao);
+        this.udao = udao;
+    }
+}
+```
