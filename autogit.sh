@@ -31,7 +31,7 @@ shift $(expr $RANDOM % $#)
 # shellcheck disable=SC2034
 emoji="$1"
 
-git commit -m "emoji $2"
+git commit -m "emoji$2"
 
 sleep 1s
 
