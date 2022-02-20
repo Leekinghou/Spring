@@ -23,6 +23,7 @@ Spring notebook
 - [s07_1](#Autowired自动装配注解)@Autowired自动装配注解
 - [s07-2](#Resource装配注解)@Resource按名称自动装配注解
 - [s07-3](#元数据注解)@Primary、@PostConstruct、@PreDestroy、@Scope、@Value
+- [s08](#基于JavaConfig配置IoC容器)Java Config配置IoC容器、Java Config对象依赖注入
 # 前置知识
 
 ## 工厂模式
@@ -712,3 +713,93 @@ public class UserService {
     }
 }
 ```
+
+# 基于JavaConfig配置IoC容器
+核心：使用Java代码替代XML完成IoC容器配置
+
+- 完全摆脱XML的束缚，使用独立的Java类管理对象与依赖
+- 注解配置相对分散，利用Java Config可对配置集中管理
+- 可以在编译时进行依赖检查，不容易出错（XML运行后才会报错）
+
+| 注解 | 说明 |
+|---|---|
+|@Configuration|作用于类，说明当前类时Java Config配置类，完成替代XML文件|
+|@Bean|作用于方法，方法返回对象将被IoC容器管理，beanId默认为方法名|
+|@ImportResource|作用于类，加载静态文件，可食用@Value注解获取|
+|@ComponentScan|作用于类，同XML的<context:compoment-scan>标签|
+
+
+userController依赖于userService，userService依赖于userDao，能够完成依赖注入，  
+都仰仗于set方法，那么在基于Java Config中如何声明这些依赖呢？
+```java
+
+@Configuration //当前类是一个配置类，用于替代applicationContext.xml
+public class Config {
+  @Bean //Java Config 利用方法创建对象，将方法返回放入容器，beanId=对象名
+  public UserDao userDao(){
+    // 使用Java代码替代XML完成IoC容器配置
+    UserDao userDao = new UserDao();
+    return userDao;
+  }
+
+  @Bean //<bean id="XXX" class="XXX">
+  public UserService userService(UserDao userDao){
+    UserService userService = new UserService();
+    return userService;
+  }
+}
+```
+UserService userService(`UserDao userDao`)与`UserDao userDao` = new UserDao()相对应  
+Spring发现UserService userService()中需要注入一个参数UserDao userDao，因为存在对应关系，自动完成注入
+
+完整代码：
+```java
+@Configuration //当前类是一个配置类，用于替代applicationContext.xml
+public class Config {
+    @Bean //Java Config 利用方法创建对象，将方法返回放入容器，beanId=对象名
+    public UserDao userDao(){
+        // 使用Java代码替代XML完成IoC容器配置
+        UserDao userDao = new UserDao();
+        System.out.println("已创建" + userDao);
+        return userDao;
+    }
+
+    @Bean // <bean id="XXX" class="XXX">
+    public UserService userService(UserDao userDao){
+        UserService userService = new UserService();
+        System.out.println("已创建" + userService);
+        // 调用set方法完成属性设置
+        userService.setUserDao(userDao);
+        System.out.println("调用setUserDao" + userDao);
+        return userService;
+    }
+
+    @Bean
+    public UserController userController(UserService userService){
+        UserController userController = new UserController();
+        System.out.println("已创建" + userController);
+        userController.setUserService(userService);
+        System.out.println("调用setUserService" + userService);
+        return userController;
+    }
+}
+```
+output:
+```shell
+已创建ioc.dao.UserDao@1176dcec
+已创建ioc.service.UserService@71248c21
+调用setUserDaoioc.dao.UserDao@1176dcec
+已创建ioc.controlloer.UserController@1c72da34
+调用setUserServiceioc.service.UserService@71248c21
+```
+观察可以发现@1176dcec位置的UserDao，在创建UserService的对象userService时被调用，  
+@71248c21位置的UserService，在创建UserController时被调用
+
+说明注入和创建的是同一个对象
+
+以上创建是先按name尝试注入，name不存在时按类型注入
+Java Config在敏捷开发如SpringBoot中常用，可以快速迭代
+### 有利有弊
+- Java Config的优点是配置集中在了一份代码里，还可以在编写java代码的过程中完成
+- 缺点是重新配置需要重新编译
+- XML则适合大型项目开发中

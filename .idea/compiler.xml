@@ -6,28 +6,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-<<<<<<< HEAD
         <module name="template" />
-        <module name="s02" />
-        <module name="s01" />
-        <module name="book-shop" />
         <module name="s07_3" />
-        <module name="s04" />
         <module name="s07_2" />
         <module name="s07_1" />
+        <module name="i18n" />
+        <module name="s02" />
+        <module name="book-shop" />
+        <module name="s01" />
+        <module name="s04" />
         <module name="s06" />
         <module name="s05" />
+        <module name="s08" />
         <module name="s07" />
-        <module name="i18n" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="Spring" target="8" />
-    </bytecodeTargetLevel>
-=======
-        <module name="Spring" />
-      </profile>
-    </annotationProcessing>
->>>>>>> f49ffeb (修改分支)
   </component>
 </project>
