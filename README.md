@@ -20,8 +20,8 @@ Spring notebook
 - [s05](#生命周期) bean单例模式和多例模式，生命周期
 - [s06](#手动实现极简的IoC容器)手动实现极简的IoC容器
 - [s07](#基于注解配置IoC容器)基于注解配置IoC容器
-- [s07_1](#@Autowired自动装配注解)@Autowired自动装配注解
-- [s07-2](#@Resource装配注解)@Resource按名称自动装配注解
+- [s07_1](#Autowired自动装配注解)@Autowired自动装配注解
+- [s07-2](#Resource装配注解)@Resource按名称自动装配注解
 
 # 前置知识
 
@@ -579,7 +579,7 @@ org.springframework.context.event.internalEventListenerFactory:org.springframewo
 
 按类型注入则是不关心bean的名称，而是在为属性注入时，将属性类型相同的对象也完成注入
 
-## @Autowired自动装配注解
+## Autowired自动装配注解
 ```java
 public class UserService {
     @Autowired
@@ -624,7 +624,7 @@ public class UserService {
 更好的办法，是按名称装配
 
 
-## @Resource装配注解
+## Resource按名称自动装配注解
 具体测试见模块s07-2
 ```java
 @Service
