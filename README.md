@@ -661,6 +661,10 @@ public class DepartmentService {
 |@Scope|设置对象的scope属性|
 |@Value|为属性注入静态数据(配置文件常用)|
 
+pom.xml添加:
+```xml
+    <context:property-placeholder location="classpath:config.properties"/>
+```
 config.properties:
 ```properties
 metaData=spring.com
