@@ -625,6 +625,7 @@ public class UserService {
 
 
 ## @Resource装配注解
+具体测试见模块s07-2
 ```java
 @Service
 public class DepartmentService {
