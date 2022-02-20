@@ -28,8 +28,8 @@ set -- $emoji_array
 # shellcheck disable=SC2046
 shift $(expr $RANDOM % $#)
 emoji="$1"
-
-git commit -m "$emoji $2"
+echo "选取的表情是$emoji"
+git commit -m "$emoji$2"
 
 sleep 1s
 
