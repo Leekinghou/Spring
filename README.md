@@ -579,7 +579,7 @@ org.springframework.context.event.internalEventListenerFactory:org.springframewo
 
 按类型注入则是不关心bean的名称，而是在为属性注入时，将属性类型相同的对象也完成注入
 
-## @Autowired类型装配注解
+## @Autowired自动装配注解
 ```java
 public class UserService {
     @Autowired

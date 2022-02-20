@@ -22,7 +22,14 @@ sleep 1s
 
 echo "####### 添加文件 #######"
 
-git commit -m "$2"
+# 表情
+emoji_array=(':zap: ' ':fire: ' ':rocket:' ':robot:' ':hankey:' ':truck:' ':alien:')
+set -- $emoji_array
+# shellcheck disable=SC2046
+shift $(expr $RANDOM % $#)
+emoji="$1"
+echo "选取的表情是$emoji"
+git commit -m "$emoji$2"
 
 sleep 1s
 
