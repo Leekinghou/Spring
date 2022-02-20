@@ -683,7 +683,7 @@ public class UserService {
     @Autowired
     private IUserDao udao;
 
-    @Value("connection.username")
+    @Value("${connection.username}")
     private String username;
 
     @PostConstruct // XML中bean init-method完全相同
