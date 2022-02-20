@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+<<<<<<< HEAD
         <module name="template" />
         <module name="s02" />
         <module name="s01" />
@@ -23,5 +24,10 @@
     <bytecodeTargetLevel>
       <module name="Spring" target="8" />
     </bytecodeTargetLevel>
+=======
+        <module name="Spring" />
+      </profile>
+    </annotationProcessing>
+>>>>>>> f49ffeb (修改分支)
   </component>
 </project>
