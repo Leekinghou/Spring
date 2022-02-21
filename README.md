@@ -23,7 +23,8 @@ Spring notebook
 - [s07_1](#Autowired自动装配注解)@Autowired自动装配注解
 - [s07-2](#Resource装配注解)@Resource按名称自动装配注解
 - [s07-3](#元数据注解)@Primary、@PostConstruct、@PreDestroy、@Scope、@Value
-- [s08](#基于JavaConfig配置IoC容器)Java Config配置IoC容器、Java Config对象依赖注入
+- [s08](#基于JavaConfig配置IoC容器)Java Config配置IoC容器、Java Config对象依赖注入 
+- [s09](#SpringTest测试模块) Spring Test测试模块的用途
 # 前置知识
 
 ## 工厂模式
@@ -803,3 +804,63 @@ Java Config在敏捷开发如SpringBoot中常用，可以快速迭代
 - Java Config的优点是配置集中在了一份代码里，还可以在编写java代码的过程中完成
 - 缺点是重新配置需要重新编译
 - XML则适合大型项目开发中
+
+
+# SpringTest测试模块
+- Spring Test对JUnit单元测试框架有良好的整合
+- 通过Spring Test可以在JUnit在单元测试时自动初始化IoC容器
+- 适用于需要多个测试用例的情景
+## Spring与JUnit4整合过程
+- Maven工程依赖spring-test
+- 利用`@RunWith`与`@ContextConfiguration`描述测试用例类
+  - @RunWith表示将JUnit4交给Spring Test运行，由后者接管
+  - @ContextConfiguration表示使用什么配置文件，传入数据是一个数组
+- 测试用例类从容器获取对象完成测试用例的执行
+
+- 添加依赖:
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>5.2.12.RELEASE</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>5.2.12.RELEASE</version>
+    </dependency>
+
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.12</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+```
+
+- SpringTestor代码：
+```java
+// 将JUnit4的执行权交给Spring Test模块，在测试用例执行之前自动初始化IoC容器
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml"})
+public class SpringTestor {
+    /**
+     * 使用方法：在使用之前假设IoC容器已经初始化好，只不过是在写一个测试用的Spring Application
+     */
+
+    @Resource
+    private UserService userService;
+
+    @Test
+    public void testUserService(){
+        userService.createUser();
+    }
+}
+```
+
+output:
+![](https://gitee.com/leekinghou/image/raw/master/img/20220221122510.png)
+
