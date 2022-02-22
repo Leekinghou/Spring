@@ -1,16 +1,16 @@
 # Spring
-Spring notebook
-若克隆项目到本地需要将不同的文件夹添加为module
+Spring notebook  
+若克隆项目到本地需要将不同的文件夹添加为module  
 ## 使用方法
 ```shell
 git clone git@github.com:Leekinghou/Spring.git
 cd Spring
 ```
 
-右键点击project空白处，选择打开模块设定（open module settings）
+右键点击project空白处，选择打开模块设定（open module settings）  
 ![](https://gitee.com/leekinghou/image/raw/master/img/20220222201054.png)
 
-新增对应文件夹为模块
+新增对应文件夹为模块  
 ![](https://gitee.com/leekinghou/image/raw/master/img/20220222201201.png)
 
 
@@ -40,6 +40,7 @@ cd Spring
 - [s09](#SpringTest测试模块) Spring Test测试模块的用途
 - [s10](#初识AOP)初识AOP
 - [s11](#环绕通知)环绕通知around advice
+- [s12](#使用注解配置AOP) 使用@Around注解配置AOP
 # 前置知识
 
 ## 工厂模式
@@ -1051,4 +1052,29 @@ public class MethodChecker {
         <aop:around method="check" pointcut-ref="pointcut"/>
     </aop:aspect>
 </aop:config>
+```
+
+# 使用注解配置AOP
+```xml
+<!--初始化IoC容器-->
+<context:component-scan base-package="com.spring"/>
+<!--启用Spring AOP注解模式-->
+<aop:aspectj-autoproxy/>
+```
+
+```java
+@Component //标记当前类为组件
+@Aspect //说明当前类是切面类
+public class MethodChecker {
+    //环绕通知,参数为PointCut切点表达式
+    @Around("execution(* com..*Service.*(..))")
+    public Object check(ProceedingJoinPoint pjp) throws Throwable {
+        try {
+            Object ret = pjp.proceed();//执行目标方法
+            return ret;
+        } catch (Throwable throwable) {
+            throw throwable;
+        }
+    }
+}
 ```
