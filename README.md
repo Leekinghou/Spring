@@ -865,9 +865,6 @@ public class SpringTestor {
 output:
 ![](https://gitee.com/leekinghou/image/raw/master/img/20220221122510.png)
 
-
-
-
 # 初识AOP
 
 - Aspect oriented Programming面向切面编程
@@ -947,9 +944,16 @@ AoP配置:
 </aop:config>
 ```
 
+## AOP关键概念
+几个关键概念:
+![](https://gitee.com/leekinghou/image/raw/master/img/20220222113231.png)
 
+五种通知类型:
+![](https://gitee.com/leekinghou/image/raw/master/img/20220222113333.png)
 
-
-
-
-
+## AoP配置过程
+- 依赖AspectJ
+- 实现切面类/方法
+- 配置Aspect Bean
+- 定义PointCut
+- 配置Advice
