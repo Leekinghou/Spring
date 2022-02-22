@@ -1,6 +1,19 @@
 # Spring
 Spring notebook
-  
+若克隆项目到本地需要将不同的文件夹添加为module
+## 使用方法
+```shell
+git clone git@github.com:Leekinghou/Spring.git
+cd Spring
+```
+
+右键点击project空白处，选择打开模块设定（open module settings）
+![](https://gitee.com/leekinghou/image/raw/master/img/20220222201054.png)
+
+新增对应文件夹为模块
+![](https://gitee.com/leekinghou/image/raw/master/img/20220222201201.png)
+
+
 - ioc
   将对象交由ioc容器统一管理，对象和对象之间实现解耦
   通过修改配置文件修改对象关系
