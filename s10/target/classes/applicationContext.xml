@@ -20,4 +20,16 @@
         <property name="employeeDao" ref="employeeDao"/>
     </bean>
 
+    <!--  AOP配置  -->
+    <bean id="methodAspect" class="com.spring.aop.aspect.MethodAspect"/>
+    <aop:config>
+        <!--    PointCut 切点，使用execution表达式描述切面的作用范围    -->
+        <!--    public * com.spring..*.*(..)表示切面作用于com.spring包下所有类的所有方法上    -->
+        <aop:pointcut id="pointcut" expression="execution(public * com.spring..*.*(..))"></aop:pointcut>
+        <!--    定义切面类    -->
+        <aop:aspect ref="methodAspect">
+            <!--      before通知，代表在目标方法运行前先执行methodAspect.printExecutionTime()      -->
+            <aop:before method="printExecutionTime" pointcut-ref="pointcut"/>
+        </aop:aspect>
+    </aop:config>
 </beans>
