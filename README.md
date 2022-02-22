@@ -865,9 +865,6 @@ public class SpringTestor {
 output:
 ![](https://gitee.com/leekinghou/image/raw/master/img/20220221122510.png)
 
-
-
-
 # 初识AOP
 
 - Aspect oriented Programming面向切面编程
@@ -893,7 +890,10 @@ AOP底层依赖
 </dependencies>
 ```
 
-AOP特有的Scanner
+AOP特有的Schema  
+位置：  
+![](https://gitee.com/leekinghou/image/raw/master/img/20220222114223.png)
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -947,9 +947,74 @@ AoP配置:
 </aop:config>
 ```
 
+## AOP关键概念
+几个关键概念:
+![](https://gitee.com/leekinghou/image/raw/master/img/20220222113231.png)
+
+五种通知类型:
+![](https://gitee.com/leekinghou/image/raw/master/img/20220222113333.png)
+
+## AOP配置过程
+- 依赖AspectJ
+- 实现切面类/方法
+- 配置Aspect Bean
+- 定义PointCut
+- 配置Advice
 
 
+## JoinPoint知识点
 
+### JoinPoint获取目标信息
+```java
+// getTarget()获取目标类
+String className = joinPoint.getTarget().getClass().getName(); //获取目标类的名称
+// getSignature()获取目标方法
+String methodName = joinPoint.getSignature().getName(); //获取目标方法名称
+System.out.println("------>" + now + ":" + className + '.' + methodName);
+// getArgs()获取目标参数
+Object[] args = joinPoint.getArgs();
+System.out.println("------>参数个数" + args.length);
+for (Object arg: args){
+    System.out.println("------>参数: " + arg);
+}
+```
+
+### Pointcut切点表达式
+
+```xml
+<aop:pointcut id="pointcut" expression="execution(public * com.spring..*.*(..))"></aop:pointcut>
+```
+
+![](https://gitee.com/leekinghou/image/raw/master/img/20220222164721.png)
+
+- `*` 表示通配符
+- `..` 表示包通配符（两个点表示无论多少个子包，都可以匹配）
+- `(..)` 参数通配符
+
+#### examples
+```xml
+expression="execution(public * com.spring..*Service.*(..))"
+```
+
+```xml
+expression="execution(public * com.spring..create*.*(..))"
+```
+
+```xml
+expression="execution(void com.spring..*.*(..))"
+```
+
+```xml
+expression="execution(String com.spring..*.*(..))"
+```
+
+```xml
+expression="execution(String com.spring..*.*(*,*))"
+```
+
+```xml
+expression="execution(String com.spring..*.*(String, *))"
+```
 
 
 
