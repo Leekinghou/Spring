@@ -26,6 +26,7 @@ Spring notebook
 - [s08](#基于JavaConfig配置IoC容器)Java Config配置IoC容器、Java Config对象依赖注入 
 - [s09](#SpringTest测试模块) Spring Test测试模块的用途
 - [s10](#初识AOP)初识AOP
+- [s11](#环绕通知)环绕通知around advice
 # 前置知识
 
 ## 工厂模式
@@ -954,6 +955,16 @@ AoP配置:
 五种通知类型:
 ![](https://gitee.com/leekinghou/image/raw/master/img/20220222113333.png)
 
+关于after-returning和异常通知类型：
+```java
+public void doAfterReturning(JoinPoint joinPoint, Object ret){
+    System.out.println("返回值:" + ret);
+}
+```
+需要声明哪个参数接收返回值
+```xml
+<aop:after-returning method="doAfterReturning" returning="ret" pointcut-ref="pointcut">
+```
 ## AOP配置过程
 - 依赖AspectJ
 - 实现切面类/方法
@@ -994,27 +1005,37 @@ for (Object arg: args){
 #### examples
 ```xml
 expression="execution(public * com.spring..*Service.*(..))"
-```
 
-```xml
 expression="execution(public * com.spring..create*.*(..))"
-```
 
-```xml
 expression="execution(void com.spring..*.*(..))"
-```
 
-```xml
 expression="execution(String com.spring..*.*(..))"
-```
 
-```xml
 expression="execution(String com.spring..*.*(*,*))"
-```
 
-```xml
 expression="execution(String com.spring..*.*(String, *))"
 ```
 
+# 环绕通知
+```java
+public class MethodChecker {
+    //ProceedingJoinPoint是JoinPoint的升级版,在原有功能外,还可以控制目标方法是否执行
+    public Object check(ProceedingJoinPoint pjp){
+        //执行目标方法,返回值是目标方法的返回值
+        Object ret = pjp.proceed();
+        return ret;
+    }
+}
+```
 
-
+```xml
+<!--  AOP配置  -->
+<bean id="methodChecker" class="com.spring.aop.aspect.MethodChecker"/>
+<aop:config>
+    <aop:pointcut id="pointcut" expression="execution(* com.spring..*.*(..))"/>
+    <aop:aspect ref="methodChecker">
+        <aop:around method="check" pointcut-ref="pointcut"/>
+    </aop:aspect>
+</aop:config>
+```
