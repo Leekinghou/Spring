@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="template" />
+        <module name="aop" />
         <module name="s07_3" />
         <module name="s07_2" />
         <module name="s07_1" />
