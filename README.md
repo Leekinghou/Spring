@@ -890,7 +890,10 @@ AOP底层依赖
 </dependencies>
 ```
 
-AOP特有的Scanner
+AOP特有的Schema  
+位置：  
+![](https://gitee.com/leekinghou/image/raw/master/img/20220222114223.png)
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
@@ -957,3 +960,20 @@ AoP配置:
 - 配置Aspect Bean
 - 定义PointCut
 - 配置Advice
+
+
+## JoinPort获取目标信息
+```java
+// getTarget()获取目标类
+String className = joinPoint.getTarget().getClass().getName(); //获取目标类的名称
+// getSignature()获取目标方法
+String methodName = joinPoint.getSignature().getName(); //获取目标方法名称
+System.out.println("------>" + now + ":" + className + '.' + methodName);
+// getArgs()获取目标参数
+Object[] args = joinPoint.getArgs();
+System.out.println("------>参数个数" + args.length);
+for (Object arg: args){
+    System.out.println("------>参数: " + arg);
+}
+```
+
