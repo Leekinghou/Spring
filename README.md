@@ -954,7 +954,7 @@ AoP配置:
 五种通知类型:
 ![](https://gitee.com/leekinghou/image/raw/master/img/20220222113333.png)
 
-## AoP配置过程
+## AOP配置过程
 - 依赖AspectJ
 - 实现切面类/方法
 - 配置Aspect Bean
@@ -962,7 +962,9 @@ AoP配置:
 - 配置Advice
 
 
-## JoinPort获取目标信息
+## JoinPoint知识点
+
+### JoinPoint获取目标信息
 ```java
 // getTarget()获取目标类
 String className = joinPoint.getTarget().getClass().getName(); //获取目标类的名称
@@ -976,4 +978,43 @@ for (Object arg: args){
     System.out.println("------>参数: " + arg);
 }
 ```
+
+### Pointcut切点表达式
+
+```xml
+<aop:pointcut id="pointcut" expression="execution(public * com.spring..*.*(..))"></aop:pointcut>
+```
+
+![](https://gitee.com/leekinghou/image/raw/master/img/20220222164721.png)
+
+- `*` 表示通配符
+- `..` 表示包通配符（两个点表示无论多少个子包，都可以匹配）
+- `(..)` 参数通配符
+
+#### examples
+```xml
+expression="execution(public * com.spring..*Service.*(..))"
+```
+
+```xml
+expression="execution(public * com.spring..create*.*(..))"
+```
+
+```xml
+expression="execution(void com.spring..*.*(..))"
+```
+
+```xml
+expression="execution(String com.spring..*.*(..))"
+```
+
+```xml
+expression="execution(String com.spring..*.*(*,*))"
+```
+
+```xml
+expression="execution(String com.spring..*.*(String, *))"
+```
+
+
 
