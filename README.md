@@ -1112,6 +1112,27 @@ employeeServiceProxy.createEmployee();
 综上，实现动态代理，需要：  
 一个接口，一个具体实现类，继承`InvocationHandler`接口
 
-动态创建代理类,必须实现接口，如果没有接口，那就可以使用CGlib实现动态代理  
+动态创建代理类,必须实现接口，如果没有接口，那就默认使用CGlib继承的方式实现动态代理  
+![](https://gitee.com/leekinghou/image/raw/master/img/20220223235207.png)
+那么可知讨论Spring AOP的实现原理应分为两种情况：  
+第一种如果目标类实现了接口，那么Spring底层使用JDK动态代理来实现AOP，从而对目标类进行扩展。    
+第二种如果没有实现接口，那么就默认使用CGLib继承的方式对目标类进行扩展。  
+
+## 总结
+- Spring AOP面向切面编程是在不修改源码的情况下扩展程序  
+- AOP核心概念
+  - 基于AspectJ
+  - AOP利用代理模式实现对象运行时的功能扩展
+  - 注解
+  - 五种通知类型（主要是Around）
+  - 切点表达式书写办法
+- AOP配置过程
+  - 依赖AspectJ
+  - 实现切面类/方法
+  - 配置Aspect Bean
+  - 定义PointCut
+  - 配置Advice
+- AOP 实现原理
+  - 两种形势都是基于代理模式实现的
 
 
