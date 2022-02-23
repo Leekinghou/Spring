@@ -14,6 +14,7 @@
         <module name="s11" />
         <module name="s10" />
         <module name="s02" />
+        <module name="s13" />
         <module name="book-shop" />
         <module name="s01" />
         <module name="s12" />
@@ -25,8 +26,5 @@
         <module name="s09" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="s12" target="1.5" />
-    </bytecodeTargetLevel>
   </component>
 </project>

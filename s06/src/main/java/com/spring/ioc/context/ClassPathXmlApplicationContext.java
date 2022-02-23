@@ -20,7 +20,7 @@ import java.util.Map;
 public class ClassPathXmlApplicationContext implements ApplicationContext{
     private Map iocContainer = new HashMap();
 
-    public ClassPathXmlApplicationContext(){
+    public ClassPathXmlApplicationContext(String s){
         try{
             // 获得配置文件的物理地址 getResource()用于从Class下获取指定的资源，getPath()用于得到资源文件的物理路径
             String filePath = this.getClass().getResource("/ApplicationContext.xml").getPath();

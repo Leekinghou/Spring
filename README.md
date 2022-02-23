@@ -21,6 +21,8 @@ cd Spring
   由java反转实现
   
 # 目录
+
+## IOC
 - [reflection](#反射) 反射 reflection
 - [i18n](#工厂模式) 工厂模式实例 i18n
 - [S01](#使用Spring) 使用Spring
@@ -32,15 +34,26 @@ cd Spring
 - [bean scope](#beanScope属性) bean scope属性
 - [s05](#生命周期) bean单例模式和多例模式，生命周期
 - [s06](#手动实现极简的IoC容器)手动实现极简的IoC容器
+  
+### 注解
 - [s07](#基于注解配置IoC容器)基于注解配置IoC容器
 - [s07_1](#Autowired自动装配注解)@Autowired自动装配注解
 - [s07-2](#Resource装配注解)@Resource按名称自动装配注解
 - [s07-3](#元数据注解)@Primary、@PostConstruct、@PreDestroy、@Scope、@Value
+  
+### Java Config
 - [s08](#基于JavaConfig配置IoC容器)Java Config配置IoC容器、Java Config对象依赖注入 
 - [s09](#SpringTest测试模块) Spring Test测试模块的用途
+  
+## AOP
 - [s10](#初识AOP)初识AOP
 - [s11](#环绕通知)环绕通知around advice
 - [s12](#使用注解配置AOP) 使用@Around注解配置AOP
+  
+### AOP底层实现原理
+- [s13](#AOP静态代理) 模式设计之静态代理模式
+
+
 # 前置知识
 
 ## 工厂模式

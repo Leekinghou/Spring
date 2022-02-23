@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 /**
  * 用户服务
  */
+
 @Service
 public class UserService {
     @Resource
