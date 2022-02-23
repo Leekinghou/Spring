@@ -9,7 +9,7 @@ import java.util.Date;
  */
 
 public class UserServiceProxy implements UserService{
-    //持有委托类的对象
+    // 持有委托类的对象
     private UserService userService;
 
     public UserServiceProxy(UserService userService) {

@@ -52,6 +52,7 @@ cd Spring
   
 ### AOP底层实现原理
 - [s13](#AOP静态代理) 模式设计之静态代理模式
+- [s14](#AOP动态代理) 模式设计之动态代理模式
 
 
 # 前置知识
@@ -1091,3 +1092,26 @@ public class MethodChecker {
     }
 }
 ```
+
+# AOP动态代理
+结构图：
+![](https://gitee.com/leekinghou/image/raw/master/img/20220223204448.png)
+
+
+```java
+EmployeeService employeeService = new EmployeeServiceImpl();
+// 传入类加载器
+// 传入EmployeeService实现的接口
+// 传入EmployeeService的具体实现类
+EmployeeService employeeServiceProxy = (EmployeeService) Proxy.newProxyInstance(employeeService.getClass().getClassLoader(),
+    employeeService.getClass().getInterfaces(),
+    new ProxyInvocationHandler(employeeService));
+
+employeeServiceProxy.createEmployee();
+```
+综上，实现动态代理，需要：  
+一个接口，一个具体实现类，继承`InvocationHandler`接口
+
+动态创建代理类,必须实现接口，如果没有接口，那就可以使用CGlib实现动态代理  
+
+
