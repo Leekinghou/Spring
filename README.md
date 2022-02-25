@@ -58,7 +58,8 @@ cd Spring
 - [s15](#SpringJDBC) JDBC配置、JdbcTemplate的数据增删改查
 - [s16](#编程式事务) Jdbc transactionManager控制事务完整
 - [s17](#声明式事务) 声明式事务
-
+- [事务传播行为](#事务传播行为) 七种事务传播行为
+- [s18](#注解形式的声明式事务) 🌟注解形式的声明式事务
 # 前置知识
 
 ## 工厂模式
@@ -1240,4 +1241,38 @@ public List<Map<String, Object>> findMapByDname(String dname){
 </aop:config>
 ```
 
+# 事务传播行为
+事务嵌套使用时的先后关系
+
+七种事务传播行为：
+![](https://gitee.com/leekinghou/image/raw/master/img/1645794827030.png)
+
+## REQUIRED(默认)
+![](https://gitee.com/leekinghou/image/raw/master/img/20220225210242.png)
+
+## REQUIRED_NEW
+![](https://gitee.com/leekinghou/image/raw/master/img/20220225211049.png)
+
+## SUPPORTS
+当前运行的方法中有事务就用，没事务就不用
+
+
+# 注解形式的声明式事务
+applicationContext.xml：
+```xml
+<!--启用注解形式声明式事务-->
+<tx:annotation-driven transaction-manager="transactionManager"/>
+```
+事务类/方法：
+```java
+@Transactional(propagation = Propagation.REQUIRED)
+public class EmployeeService {
+    ……
+
+    @Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
+    public Employee findById(Integer eno){
+      return employeeDao.findById(eno);
+    }
+}
+```
 
