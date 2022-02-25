@@ -57,6 +57,8 @@ cd Spring
 ## JDBC
 - [s15](#SpringJDBC) JDBC配置、JdbcTemplate的数据增删改查
 - [s16](#编程式事务) Jdbc transactionManager控制事务完整
+- [s17](#声明式事务) 声明式事务
+
 # 前置知识
 
 ## 工厂模式

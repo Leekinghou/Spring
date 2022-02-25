@@ -16,7 +16,7 @@
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/imooc?useSSL=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
         <property name="username" value="root"/>
-        <property name="password" value="MysqlSwan0716"/>
+        <property name="password" value=""/>
     </bean>
     <!--    jdbcTemplate提供进行增删改查的API-->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
