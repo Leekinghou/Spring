@@ -56,7 +56,7 @@ cd Spring
 
 ## JDBC
 - [s15](#SpringJDBC) JDBC配置、JdbcTemplate的数据增删改查
-- [s16](#编程式事务) Jdbc transactionManager控制事务
+- [s16](#编程式事务) Jdbc transactionManager控制事务完整
 # 前置知识
 
 ## 工厂模式
@@ -1187,5 +1187,16 @@ public List<Map<String, Object>> findMapByDname(String dname){
     return maps;
 }
 ```
+
+# 编程式事务
+事务：  
+- 事务就是事情要么做完，要么什么都不做（银行、军事）——一致性
+- 事务依赖数据库实现，MySQL通过**事务区**作为数据缓冲地带
+
+编程式事务：
+- Spring JDBC 通过TransactionManager事务管理器实现事务控制
+- 通过commit/rollback方法进行事务提交与回滚
+
+
 
 
