@@ -35,32 +35,14 @@ public class EmployeeService {
     }
 
     public void batchImport(){
-        // 定义了事务默认的标准配置
-        TransactionDefinition definition = new DefaultTransactionDefinition();
-        // 开始一个事务，当前事务状态
-        TransactionStatus status = transactionManager.getTransaction(definition);
-        try {
-            for (int i = 1; i < 10; i++) {
-//                if (i == 3){
-//                    throw new RuntimeException("意料之外的异常");
-//                }
-                Employee employee = new Employee();
-                employee.setEno(8000 + i);
-                employee.setEname("员工" + i);
-                employee.setDname("市场部");
-                employee.setSalary(5000f);
-                employee.setHiredate(new Date());
-                employeeDao.insert(employee);
-            }
-            // 提交事务
-            transactionManager.commit(status);
-        }catch (Exception e){
-            // 回滚事务
-            transactionManager.rollback(status);
-            // 内部消化，异常不会被抛出
-            e.printStackTrace();
-            // 在调用方抛出异常
-            throw e;
+        for (int i = 1; i < 10; i++) {
+            Employee employee = new Employee();
+            employee.setEno(8000 + i);
+            employee.setEname("员工" + i);
+            employee.setDname("市场部");
+            employee.setSalary(5000f);
+            employee.setHiredate(new Date());
+            employeeDao.insert(employee);
         }
     }
 }
