@@ -1188,6 +1188,17 @@ public List<Map<String, Object>> findMapByDname(String dname){
 }
 ```
 
+![](https://gitee.com/leekinghou/image/raw/master/img/20220225150717.png)
+
+配置日志输出：
+```xml
+<dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <version>1.2.3</version>
+</dependency>
+```
+
 # 编程式事务
 事务：  
 - 事务就是事情要么做完，要么什么都不做（银行、军事）——一致性
@@ -1197,6 +1208,34 @@ public List<Map<String, Object>> findMapByDname(String dname){
 - Spring JDBC 通过TransactionManager事务管理器实现事务控制
 - 通过commit/rollback方法进行事务提交与回滚
 
+但如有程序员忘记配置编程式事务，容易造成数据一致性损害，因此有**声明式事务**，本质是AOP环绕通知
 
+# 声明式事务
+配置流程：
+```xml
+<!--  1. 事务管理器, 用于创建事务/提交/回滚  -->
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+</bean>
+<!--  2. 事务通知配置，决定哪些方法使用事务，哪些方法不使用事务  -->
+<tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <tx:attributes>
+        <!--  目标方法名为batchImport时，启用声明式事务，成功提交，运行时异常回滚  -->
+        <tx:method name="batchImport" propagation="REQUIRED"/>
+        <!--      通配符匹配      -->
+        <tx:method name="batch*" propagation="REQUIRED"/>
+        <!--      设置所有find开头的方法都不需要使用事务      -->
+        <tx:method name="find*" propagation="NOT_SUPPORTED" read-only="true"/>
+        <tx:method name="get*" propagation="NOT_SUPPORTED" read-only="true"/>
+        <!--      设置其他事务      -->
+        <tx:method name="*" propagation="REQUIRED"/>
+    </tx:attributes>
+</tx:advice>
+<!--  3. 定义声明式事务的作用范围  -->
+<aop:config>
+    <aop:pointcut id="pointcut" expression="execution(* com.spring..*Service.*(..))"/>
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+</aop:config>
+```
 
 
