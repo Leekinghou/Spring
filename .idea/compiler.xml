@@ -26,6 +26,7 @@
         <module name="s16" />
         <module name="s08" />
         <module name="s07" />
+        <module name="s18" />
         <module name="s09" />
       </profile>
     </annotationProcessing>
