@@ -48,13 +48,15 @@ cd Spring
 ## AOP
 - [s10](#初识AOP)初识AOP
 - [s11](#环绕通知)环绕通知around advice
-- [s12](#使用注解配置AOP) 使用@Around注解配置AOP
+- [s12](#使用注解配置AOP) 🌟使用@Around注解配置AOP
   
 ### AOP底层实现原理
 - [s13](#AOP静态代理) 模式设计之静态代理模式
-- [s14](#AOP动态代理) 模式设计之动态代理模式
+- [s14](#AOP动态代理) 🌟模式设计之动态代理模式
 
-
+## JDBC
+- [s15](#SpringJDBC) JDBC配置、JdbcTemplate的数据增删改查
+- [s16](#编程式事务) Jdbc transactionManager控制事务
 # 前置知识
 
 ## 工厂模式
@@ -1133,6 +1135,57 @@ employeeServiceProxy.createEmployee();
   - 定义PointCut
   - 配置Advice
 - AOP 实现原理
-  - 两种形势都是基于代理模式实现的
+  - 两种形式都是基于代理模式实现的
+
+# SpringJDBC
+MyBatis是高度集成的数据库操作框架，适用于小型、敏捷开发
+JDBC封装程度低，容易定制
+
+pom依赖：
+```xml
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-jdbc</artifactId>
+    <version>5.2.12.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-test</artifactId>
+    <version>5.2.12.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.25</version>
+</dependency>
+```
+
+applicationContext:
+```xml
+<!--    jdbcTemplate提供进行增删改查的API-->
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <property name="dataSource" ref="dataSource"/>
+</bean>
+```
+## jdbcTemplate
+- jdbcTemplate.queryForObject()
+```java
+public Employee findById(Integer eno){
+    String sql = "Select * from employee where eno = ?";
+    Employee employee = jdbcTemplate.queryForObject(sql, new Object[]{eno}, new BeanPropertyRowMapper<Employee>(Employee.class));
+    return employee;
+}
+```
+
+- jdbcTemplate.queryForList()
+```java
+public List<Map<String, Object>> findMapByDname(String dname){
+    String sql = "Select eno as empNo, salary as empSa from employee where dname = ? ";
+    // 将结果封装为Maps输出
+    //        return jdbcTemplate.queryForList(sql, new Object[]{dname});
+    List<Map<String, Object>> maps = jdbcTemplate.queryForList(sql, new Object[]{dname});
+    return maps;
+}
+```
 
 
