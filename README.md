@@ -1276,3 +1276,17 @@ public class EmployeeService {
 }
 ```
 
+## 总结
+- Spring JDBC与JdbcTemplate对象
+  - JDBC用于处理关系型数据库
+  - JdbcTemplate是JDBC的核心类，提供数据增删改查方法
+  - JDBC使用方法：
+    - 引入spring-jdbc依赖
+    - 配置DataSource数据源
+    - 在Dao注入jdbcTemplate对象，实现数据增删改查
+- 编程式事务与声明式事务
+  - 编程式事务：代码手动提交/回滚
+- 声明式事务的七种传播行为
+
+
+
